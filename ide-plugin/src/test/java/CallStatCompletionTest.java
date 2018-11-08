@@ -76,7 +76,7 @@ public class CallStatCompletionTest extends LightPlatformCodeInsightFixtureTestC
         List<CallInfo> callInfos = runAndGetCallInfos("simple_call_info_collection_test.rb",
                 createMethodInfo("AClass", "foo"));
         assertEquals(1, callInfos.size());
-        assertTrue(allCallInfosHaveNumberOfArguments(callInfos, 1));
+        assertTrue(allCallInfosHaveNumberOfUnnamedArguments(callInfos, 1));
         assertTrue(callInfosContainsUnique(callInfos, singletonList("String"), "Symbol"));
     }
 
@@ -90,11 +90,11 @@ public class CallStatCompletionTest extends LightPlatformCodeInsightFixtureTestC
                 createMethodInfo("A", "bar")));
 
         assertEquals(1, fooCallInfos.size());
-        assertTrue(allCallInfosHaveNumberOfArguments(fooCallInfos, 2));
+        assertTrue(allCallInfosHaveNumberOfUnnamedArguments(fooCallInfos, 2));
         assertTrue(callInfosContainsUnique(fooCallInfos, asList("String", "Class"), "String"));
 
         assertEquals(3, barCallInfos.size());
-        assertTrue(allCallInfosHaveNumberOfArguments(barCallInfos, 1));
+        assertTrue(allCallInfosHaveNumberOfUnnamedArguments(barCallInfos, 1));
         assertTrue(callInfosContainsUnique(barCallInfos, singletonList("TrueClass"), "A"));
         assertTrue(callInfosContainsUnique(barCallInfos, singletonList("FalseClass"), "FalseClass"));
         assertTrue(callInfosContainsUnique(barCallInfos, singletonList("Symbol"), "A"));
@@ -105,7 +105,7 @@ public class CallStatCompletionTest extends LightPlatformCodeInsightFixtureTestC
                 createMethodInfo("AClass", "foo"));
 
         assertEquals(1, callInfos.size());
-        assertTrue(allCallInfosHaveNumberOfArguments(callInfos, 2));
+        assertTrue(allCallInfosHaveNumberOfUnnamedArguments(callInfos, 2));
         assertTrue(callInfosContainsUnique(callInfos, asList("String", "TrueClass"), "Regexp"));
     }
 
@@ -113,7 +113,7 @@ public class CallStatCompletionTest extends LightPlatformCodeInsightFixtureTestC
         List<CallInfo> callInfos = runAndGetCallInfos("save_types_between_launches_test_part_1.rb",
                 createMethodInfo("A", "foo"));
         assertEquals(2, callInfos.size());
-        assertTrue(allCallInfosHaveNumberOfArguments(callInfos, 1));
+        assertTrue(allCallInfosHaveNumberOfUnnamedArguments(callInfos, 1));
 
         assertTrue(callInfosContainsUnique(callInfos, singletonList("String"), "Symbol"));
         assertTrue(callInfosContainsUnique(callInfos, singletonList("Class"), "A"));
@@ -121,7 +121,7 @@ public class CallStatCompletionTest extends LightPlatformCodeInsightFixtureTestC
         callInfos = runAndGetCallInfos("save_types_between_launches_test_part_2.rb",
                 createMethodInfo("A", "foo"));
         assertEquals(4, callInfos.size());
-        assertTrue(allCallInfosHaveNumberOfArguments(callInfos, 1));
+        assertTrue(allCallInfosHaveNumberOfUnnamedArguments(callInfos, 1));
 
         assertTrue(callInfosContainsUnique(callInfos, singletonList("String"), "Symbol"));
         assertTrue(callInfosContainsUnique(callInfos, singletonList("Class"), "A"));
@@ -133,13 +133,13 @@ public class CallStatCompletionTest extends LightPlatformCodeInsightFixtureTestC
         List<CallInfo> callInfos = runAndGetCallInfos("forget_call_info_when_arguments_number_changed_test_part_1.rb",
                 createMethodInfo("A", "foo"));
         assertEquals(1, callInfos.size());
-        assertTrue(allCallInfosHaveNumberOfArguments(callInfos, 1));
+        assertTrue(allCallInfosHaveNumberOfUnnamedArguments(callInfos, 1));
         assertTrue(callInfosContainsUnique(callInfos, singletonList("String"), "Symbol"));
 
         callInfos = runAndGetCallInfos("forget_call_info_when_arguments_number_changed_test_part_2.rb",
                 createMethodInfo("A", "foo"));
         assertEquals(1, callInfos.size());
-        assertTrue(allCallInfosHaveNumberOfArguments(callInfos, 2));
+        assertTrue(allCallInfosHaveNumberOfUnnamedArguments(callInfos, 2));
         assertTrue(callInfosContainsUnique(callInfos, asList("TrueClass", "FalseClass"), "FalseClass"));
     }
 
@@ -147,7 +147,7 @@ public class CallStatCompletionTest extends LightPlatformCodeInsightFixtureTestC
         List<CallInfo> callInfos = runAndGetCallInfos("call_info_of_nested_class_test.rb",
                 createMethodInfo("M::A", "foo"));
         assertEquals(1, callInfos.size());
-        assertTrue(allCallInfosHaveNumberOfArguments(callInfos, 1));
+        assertTrue(allCallInfosHaveNumberOfUnnamedArguments(callInfos, 1));
         assertTrue(callInfosContainsUnique(callInfos, singletonList("M::A"), "M::A"));
     }
 
@@ -155,7 +155,7 @@ public class CallStatCompletionTest extends LightPlatformCodeInsightFixtureTestC
         List<CallInfo> callInfos = runAndGetCallInfos("top_level_methods_call_info_collection_test.rb",
                 createMethodInfo("Object", "foo"));
         assertEquals(4, callInfos.size());
-        assertTrue(allCallInfosHaveNumberOfArguments(callInfos, 2));
+        assertTrue(allCallInfosHaveNumberOfUnnamedArguments(callInfos, 2));
         assertTrue(callInfosContainsUnique(callInfos, asList("TrueClass", "FalseClass"), "TrueClass"));
         assertTrue(callInfosContainsUnique(callInfos, asList("FalseClass", "Symbol"), "Symbol"));
         assertTrue(callInfosContainsUnique(callInfos, asList("String", "TrueClass"), "Regexp"));
@@ -166,7 +166,7 @@ public class CallStatCompletionTest extends LightPlatformCodeInsightFixtureTestC
         List<CallInfo> callInfos = runAndGetCallInfos("duplicates_in_callinfo_table_test.rb",
                 createMethodInfo("Object", "foo"));
         assertEquals(3, callInfos.size());
-        assertTrue(allCallInfosHaveNumberOfArguments(callInfos, 1));
+        assertTrue(allCallInfosHaveNumberOfUnnamedArguments(callInfos, 1));
         assertTrue(callInfosContainsUnique(callInfos, singletonList("String"), "String"));
         assertTrue(callInfosContainsUnique(callInfos, singletonList("String"), "FalseClass"));
         assertTrue(callInfosContainsUnique(callInfos, singletonList("FalseClass"), "FalseClass"));
@@ -176,7 +176,7 @@ public class CallStatCompletionTest extends LightPlatformCodeInsightFixtureTestC
         List<CallInfo> callInfos = runAndGetCallInfos("method_without_parameters_test.rb",
                 createMethodInfo("Object", "foo"));
         assertEquals(1, callInfos.size());
-        assertTrue(allCallInfosHaveNumberOfArguments(callInfos, 0));
+        assertTrue(allCallInfosHaveNumberOfUnnamedArguments(callInfos, 0));
         assertTrue(callInfosContainsUnique(callInfos, emptyList(), "String"));
     }
 
@@ -184,7 +184,7 @@ public class CallStatCompletionTest extends LightPlatformCodeInsightFixtureTestC
         List<CallInfo> callInfos = runAndGetCallInfos("anonymous_module_method_call_test.rb",
                 createMethodInfo("A", "foo"));
         assertEquals(1, callInfos.size());
-        assertTrue(allCallInfosHaveNumberOfArguments(callInfos, 2));
+        assertTrue(allCallInfosHaveNumberOfUnnamedArguments(callInfos, 2));
         assertTrue(callInfosContainsUnique(callInfos, asList("String", "Symbol"), "TrueClass"));
     }
 
@@ -322,7 +322,7 @@ public class CallStatCompletionTest extends LightPlatformCodeInsightFixtureTestC
                         callInfo.getReturnType().equals(returnType)).count() == 1;
     }
 
-    private static boolean allCallInfosHaveNumberOfArguments(final @NotNull List<CallInfo> callInfos, int numberOfArguments) {
+    private static boolean allCallInfosHaveNumberOfUnnamedArguments(final @NotNull List<CallInfo> callInfos, int numberOfArguments) {
         return callInfos.stream().allMatch(callInfo -> callInfo.getUnnamedArguments().size() == numberOfArguments);
     }
 }
