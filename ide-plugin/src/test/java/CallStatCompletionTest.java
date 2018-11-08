@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
@@ -316,11 +317,12 @@ public class CallStatCompletionTest extends LightPlatformCodeInsightFixtureTestC
     private static boolean callInfosContainsUnique(final @NotNull List<CallInfo> callInfos,
                                                    final @NotNull List<String> arguments,
                                                    final @NotNull String returnType) {
-        return callInfos.stream().filter(callInfo -> callInfo.getArgumentsTypes().equals(arguments) &&
-                callInfo.getReturnType().equals(returnType)).count() == 1;
+        return callInfos.stream().filter(callInfo ->
+                callInfo.getUnnamedArguments().stream().map(ArgumentNameAndType::getType).collect(Collectors.toList()).equals(arguments) &&
+                        callInfo.getReturnType().equals(returnType)).count() == 1;
     }
 
     private static boolean allCallInfosHaveNumberOfArguments(final @NotNull List<CallInfo> callInfos, int numberOfArguments) {
-        return callInfos.stream().allMatch(callInfo -> callInfo.getNumberOfArguments() == numberOfArguments);
+        return callInfos.stream().allMatch(callInfo -> callInfo.getUnnamedArguments().size() == numberOfArguments);
     }
 }

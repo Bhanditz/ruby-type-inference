@@ -23,6 +23,10 @@ public class ParameterInfo {
         return myModifier;
     }
 
+    public boolean isNamedParameter() {
+        return myModifier == Type.KEY || myModifier == Type.KEYREQ || myModifier == Type.KEYREST;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -42,6 +46,15 @@ public class ParameterInfo {
         return result;
     }
 
+    // parameter information
+    //
+    // def m(a1, a2, ..., aM,                     # mandatory
+    //        b1=(...), b2=(...), ..., bN=(...),  # optional
+    //        *c,                                 # rest
+    //        d1, d2, ..., dO,                    # post
+    //        e1:(...), e2:(...), ..., eK:(...),  # keyword
+    //        **f,                                # keyword_rest
+    //        &g)                                 # block
     public enum Type {
         REQ,
         OPT,
