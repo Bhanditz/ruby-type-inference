@@ -115,7 +115,7 @@ module ArgScanner
           this = tp.binding.eval('self')
           defined_class = this.to_s
         end
-        ArgScanner.handle_return(signature, defined_class, tp.return_value.class.name)
+        ArgScanner.handle_return(signature, defined_class, tp.return_value.class&.name)
       end
     end
 
