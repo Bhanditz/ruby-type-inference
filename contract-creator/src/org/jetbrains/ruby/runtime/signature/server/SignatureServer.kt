@@ -2,6 +2,7 @@ package org.jetbrains.ruby.runtime.signature.server
 
 import com.google.gson.Gson
 import com.google.gson.JsonParseException
+import com.google.gson.JsonSyntaxException
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.ruby.codeInsight.types.signature.*
 import org.jetbrains.ruby.codeInsight.types.storage.server.DatabaseProvider
@@ -112,7 +113,14 @@ object SignatureServer {
     }
 
     private fun parseJson(jsonString: String) {
-        val currCallInfo = ben(jsonTime) { gson.fromJson(jsonString, ServerResponseBean::class.java)?.toCallInfo() }
+        val currCallInfo = ben(jsonTime) {
+            return@ben try {
+                gson.fromJson(jsonString, ServerResponseBean::class.java)?.toCallInfo()
+            } catch (ex: JsonSyntaxException) {
+                // Sometimes it's possible that some json fields contain quotation mark and we got JsonSyntaxException
+                null
+            }
+        }
 
         // filter, for example, such things #<Class:DidYouMean::Jaro>
         if (currCallInfo?.methodInfo?.classInfo?.classFQN?.startsWith("#<") == true) {
