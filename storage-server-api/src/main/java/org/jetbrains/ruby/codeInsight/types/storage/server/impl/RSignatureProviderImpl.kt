@@ -83,7 +83,7 @@ object RSignatureProviderImpl : RSignatureProvider {
 
     override fun getRegisteredCallInfos(methodInfo: MethodInfo): List<CallInfo> {
         return transaction {
-            val methodId = MethodInfoTable.findRowId(methodInfo) ?: return@transaction listOf()
+            val methodId = MethodInfoTable.findRowId(methodInfo) ?: return@transaction emptyList()
 
             return@transaction CallInfoRow.find { CallInfoTable.methodInfoId eq methodId }.map { it.copy() }
         }
