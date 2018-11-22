@@ -113,7 +113,6 @@ object SignatureServer {
             flushNewTuplesToMainStorage()
             previousPollEndedWithFlush = true
             if (queue.isEmpty()) isReady.set(true)
-            afterExitListener?.invoke()
             return jsonString == POLL_THREAD_EXIT
         }
         previousPollEndedWithFlush = false
@@ -172,7 +171,6 @@ object SignatureServer {
                 LOGGER.severe("Error in SignatureHandler")
             } finally {
                 queue.put(POLL_THREAD_EXIT)
-                println("Yes anyway!")
                 File(pipeFilePath).delete()
                 onExit()
             }
@@ -226,6 +224,7 @@ object SignatureServer {
         override fun run() {
             while (true) {
                 if (pollJson()) {
+                    afterExitListener?.invoke()
                     break
                 }
             }
