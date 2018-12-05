@@ -1,5 +1,8 @@
 package org.jetbrains.plugins.ruby.ruby.actions
 
+import com.intellij.openapi.module.Module
+import com.intellij.openapi.project.Project
+import com.intellij.openapi.projectRoots.Sdk
 import org.jetbrains.plugins.ruby.ancestorsextractor.*
 import java.io.PrintWriter
 
@@ -8,16 +11,16 @@ import java.io.PrintWriter
  */
 abstract class ExportAncestorsActionBase(
         whatToExport: String,
-        defaultFileName: String,
+        defaultFileName: (Project) -> String,
         private val extractor: AncestorsExtractorBase
 ) : ExportFileActionBase(whatToExport, defaultFileName, extensions = arrayOf("txt"),
         numberOfProgressBarFractions = 5) {
 
-    override fun backgroundProcess() {
+    override fun backgroundProcess(absoluteFilePath: String, project: Project, module: Module?, sdk: Sdk?) {
         moveProgressBarForward()
         extractor.listener = ProgressListener()
         val ancestors: List<RubyModule> = try {
-            extractor.extractAncestors(project, sdkOrThrowExceptionWithMessage)
+            extractor.extractAncestors(project, sdk.requireSdkNotNull())
         } catch(ex: Throwable) {
             PrintWriter(absoluteFilePath).use {
                 it.println(ex.message)
@@ -40,12 +43,12 @@ abstract class ExportAncestorsActionBase(
 
 class ExportAncestorsByObjectSpaceAction : ExportAncestorsActionBase(
         whatToExport = "ancestors by ObjectSpace",
-        defaultFileName = "ancestors-by-objectspace",
+        defaultFileName = { "${it.name}-ancestors-by-objectspace" },
         extractor = AncestorsExtractorByObjectSpace()
 )
 
 class ExportAncestorsByRubymineAction : ExportAncestorsActionBase(
         whatToExport = "ancestors by RubyMine",
-        defaultFileName = "ancestors-by-rubymine",
+        defaultFileName = { "${it.name}ancestors-by-rubymine" },
         extractor = AncestorsExtractorByRubyMine()
 )
