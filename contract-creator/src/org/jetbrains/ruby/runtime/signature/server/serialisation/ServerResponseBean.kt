@@ -80,7 +80,9 @@ fun ServerResponseBean.toCallInfo(): CallInfo {
             }
         }
 
-        assert(argc == 0 || args.any { it.paramInfo.modifier == ParameterInfo.Type.BLOCK } && argc == 1)
+        assert(argc == 0 || args.any { it.paramInfo.modifier == ParameterInfo.Type.BLOCK } && argc == 1) {
+            "Failed to parse this bean: ${this.toString()}"
+        }
     }
 
     val namedArgumentsNamesToTypes = args.asSequence().filter { it.paramInfo.isNamedParameter }
